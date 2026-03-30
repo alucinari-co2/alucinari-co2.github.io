@@ -29,7 +29,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Run Trivy vulnerability scanner in repo mode
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@0.28.0
         with:
           scan-type: 'fs'
           ignore-unfixed: true
@@ -47,14 +47,20 @@ jobs:
       - name: Semgrep Scan
         run: semgrep scan --config auto --error
 
-  validate-agents:
-    name: Validate Agent Templates
+  validate-html:
+    name: Validate HTML
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          python-version: '3.11'
-      - name: Run validation script
-        run: ./src/scripts/validate_agents.py
+          node-version: '20'
+      - name: Install vnu-jar wrapper
+        run: npm install -g vnu-jar
+      - name: Run Nu HTML Checker
+        run: |
+          find . -name "*.html" \
+            ! -path "./.git/*" \
+            ! -path "./node_modules/*" \
+            -print0 | xargs -0 vnu --errors-only
