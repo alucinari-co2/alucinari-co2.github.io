@@ -1,0 +1,67 @@
+name: Devin - Trigger on Issue Label
+
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  issues: write
+
+jobs:
+  trigger-devin:
+    name: Start Devin Session
+    runs-on: ubuntu-latest
+    if: github.event.label.name == 'devin'
+    steps:
+      - name: Create Devin session
+        id: devin
+        env:
+          DEVIN_API_KEY: ${{ secrets.DEVIN_API_KEY }}
+        run: |
+          ISSUE_TITLE="${{ github.event.issue.title }}"
+          ISSUE_URL="${{ github.event.issue.html_url }}"
+          ISSUE_BODY=$(cat <<'BODY'
+          ${{ github.event.issue.body }}
+          BODY
+          )
+
+          PROMPT="Please work on the following GitHub issue from the alucinari-co2.github.io repository.
+
+          Issue: $ISSUE_TITLE
+          URL: $ISSUE_URL
+
+          Description:
+          $ISSUE_BODY"
+
+          RESPONSE=$(curl -s -X POST "https://api.devin.ai/v1/sessions" \
+            -H "Authorization: Bearer $DEVIN_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -n --arg prompt "$PROMPT" '{"prompt": $prompt}')")
+
+          SESSION_URL=$(echo "$RESPONSE" | jq -r '.url // empty')
+          SESSION_ID=$(echo "$RESPONSE" | jq -r '.session_id // .id // empty')
+
+          if [ -z "$SESSION_URL" ] && [ -n "$SESSION_ID" ]; then
+            SESSION_URL="https://app.devin.ai/sessions/$SESSION_ID"
+          fi
+
+          if [ -z "$SESSION_URL" ]; then
+            echo "::error::Failed to create Devin session. Response: $RESPONSE"
+            exit 1
+          fi
+
+          echo "session_url=$SESSION_URL" >> "$GITHUB_OUTPUT"
+          echo "✓ Devin session created: $SESSION_URL"
+
+      - name: Post comment with session link
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue comment ${{ github.event.issue.number }} \
+            --repo ${{ github.repository }} \
+            --body "🤖 **Devin session started!**
+
+          A Devin AI session has been created for this issue. You can follow along here:
+          👉 ${{ steps.devin.outputs.session_url }}
+
+          Devin will analyze the issue and work on a solution. Check the session link for live progress updates."
