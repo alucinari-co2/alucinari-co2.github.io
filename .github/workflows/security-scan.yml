@@ -8,6 +8,8 @@ on:
 
 permissions:
   contents: read
+  # REQUIRED for Trivy to upload findings to the Security tab
+  security-events: write 
 
 jobs:
   gitleaks:
@@ -28,24 +30,37 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Run Trivy vulnerability scanner in repo mode
-        uses: aquasecurity/trivy-action@0.30.0
+      
+      - name: Run Trivy scanner
+        # Using v0.35.0 specifically due to the March 2026 supply chain attack
+        uses: aquasecurity/trivy-action@v0.35.0 
         with:
           scan-type: 'fs'
           ignore-unfixed: true
           format: 'sarif'
           output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
+          exit-code: '0' # Prevents job failure so the upload step can run
+
+      - name: Upload Trivy results to Security Tab
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
 
   semgrep:
     name: Semgrep Scan
     runs-on: ubuntu-latest
-    container:
-      image: returntocorp/semgrep
+    # Switched from container to the official Action for better stability
     steps:
       - uses: actions/checkout@v4
       - name: Semgrep Scan
-        run: semgrep scan --config auto --error
+        uses: semgrep/semgrep-action@v1
+        with:
+          config: auto
+          # Use 'audit' if you don't want it to block the PR, 
+          # or keep empty to fail on findings
+          # generateSarif: "1" 
 
   validate-html:
     name: Validate HTML
@@ -56,7 +71,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Install vnu-jar wrapper
+      - name: Install vnu-jar
         run: npm install -g vnu-jar
       - name: Run Nu HTML Checker
         run: |
