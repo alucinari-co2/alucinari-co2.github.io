@@ -1,7 +1,7 @@
 {
   "name": "Special Needs",
   "short_name": "Special Needs",
-  "description": "Resize and package PNG emotes for quick sharing.",
+  "description": "Special Needs — a collection of lightweight web apps.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
