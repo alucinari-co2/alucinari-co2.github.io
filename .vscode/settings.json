@@ -1,0 +1,102 @@
+{
+  "editor.detectIndentation": false,
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2,
+  "editor.formatOnSave": false,
+  "editor.rulers": [
+    100
+  ],
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  "files.associations": {
+    "*.mdc": "markdown"
+  },
+  "files.exclude": {
+    "**/.cache": true,
+    "**/.direnv": true,
+    "**/.devenv": true,
+    "**/.git": true,
+    "**/.openclaw": true,
+    "**/.secrets": true,
+    "**/.venv": true,
+    "**/Logs": true,
+    "**/dist": true,
+    "**/node_modules": true,
+    "**/result": true,
+    "**/result-*": true,
+    "**/target": true,
+    "**/*.bak": true,
+    "**/*.log": true
+  },
+  "files.watcherExclude": {
+    "**/.cache/**": true,
+    "**/.direnv/**": true,
+    "**/.devenv/**": true,
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/.openclaw/**": true,
+    "**/.secrets/**": true,
+    "**/.venv/**": true,
+    "**/Logs/**": true,
+    "**/dist/**": true,
+    "**/node_modules/**": true,
+    "**/result/**": true,
+    "**/result-*/**": true,
+    "**/target/**": true
+  },
+  "search.exclude": {
+    "**/.cache": true,
+    "**/.direnv": true,
+    "**/.devenv": true,
+    "**/.openclaw": true,
+    "**/.secrets": true,
+    "**/.venv": true,
+    "**/Logs": true,
+    "**/dist": true,
+    "**/node_modules": true,
+    "**/result": true,
+    "**/result-*": true,
+    "**/target": true,
+    "**/*.bak": true,
+    "**/*.log": true
+  },
+  "search.followSymlinks": false,
+  "search.useIgnoreFiles": true,
+  "search.useGlobalIgnoreFiles": true,
+  "terminal.integrated.defaultProfile.linux": "bash",
+  "terminal.integrated.enableMultiLinePasteWarning": false,
+  "terminal.integrated.scrollback": 20000,
+  "git.openRepositoryInParentFolders": "never",
+  "[nix]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
+  "[shellscript]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features",
+    "editor.formatOnSave": true
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features",
+    "editor.formatOnSave": true
+  },
+  "[yaml]": {
+    "editor.formatOnSave": true
+  },
+  "[markdown]": {
+    "editor.formatOnSave": true,
+    "editor.quickSuggestions": {
+      "comments": false,
+      "other": false,
+      "strings": false
+    },
+    "editor.wordWrap": "bounded",
+    "editor.wordWrapColumn": 100,
+    "files.trimTrailingWhitespace": false
+  }
+}
