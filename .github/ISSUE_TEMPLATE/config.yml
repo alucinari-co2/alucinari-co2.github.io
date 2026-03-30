@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Discussions
+    url: https://github.com/alucinari-co2/alucinari-co2.github.io/discussions
+    about: Ask questions, share ideas, or chat about the project here.
+  - name: 🌐 Live Site
+    url: https://alucinari-co2.github.io/
+    about: Visit the live site to test apps before reporting a bug.
