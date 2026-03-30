@@ -1,3 +1,4 @@
+---
 name: cursor-agent
 description: Expert in setting up Cursor AI editor environments, rules files, agent configs, MCP servers, and workspace conventions for AI-assisted development
 tools: ["read", "edit", "search", "execute", "web", "todo"]
